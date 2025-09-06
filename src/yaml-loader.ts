@@ -69,7 +69,12 @@ export function yamlConfigToEvalConfig(yamlConfig: YamlEvalConfig, serverPath: s
     description: yamlEval.description,
     run: async (evalModel: LanguageModel) => {
       try {
-        const result = await grade(evalModel, yamlEval.prompt, serverPath);
+        const result = await grade({
+          model: evalModel,
+          prompt: yamlEval.prompt,
+          serverPath,
+          systemPrompt: yamlConfig.grading_prompt
+        });
         return JSON.parse(result);
       } catch (error) {
         // If JSON parsing fails, return a default structure

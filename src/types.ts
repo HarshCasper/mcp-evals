@@ -38,4 +38,5 @@ export interface YamlEvalConfig {
   model?: YamlModelConfig;
   evals: YamlEval[];
   env?: { [key: string]: string };
+  grading_prompt?: string;
 } 

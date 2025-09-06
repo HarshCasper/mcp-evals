@@ -87,7 +87,8 @@ export function yamlConfigToEvalConfig(yamlConfig: YamlEvalConfig, serverPath: s
 
   return {
     model,
-    evals: evalFunctions
+    evals: evalFunctions,
+    env: yamlConfig.env
   };
 }
 

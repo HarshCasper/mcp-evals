@@ -9,11 +9,14 @@ import { openai } from "@ai-sdk/openai";
 import { EvalConfig } from './types.js';
 const defaultModel = openai("gpt-4o");
 
-export async function runEvals(model: LanguageModel=defaultModel, prompt: string,serverPath: string) {
+export async function runEvals(model: LanguageModel=defaultModel, prompt: string,serverPath: string, env?: { [key: string]: string }) {
   const transport = new Experimental_StdioMCPTransport({
     command: "tsx",
     args: [serverPath],
-    env: Object.fromEntries(Object.entries(process.env).filter(([_, v]) => v !== undefined)) as Record<string, string>  
+    env: {
+      ...Object.fromEntries(Object.entries(process.env).filter(([_, v]) => v !== undefined)),
+      ...(env || {})
+    } as Record<string, string>
   });
 
   const client = await experimental_createMCPClient({
@@ -99,7 +102,11 @@ export async function runAllEvals(config: EvalConfig, serverPath: string) {
   try {
     transport = new Experimental_StdioMCPTransport({
       command: "tsx",
-      args: [serverPath]
+      args: [serverPath],
+      env: {
+        ...Object.fromEntries(Object.entries(process.env).filter(([_, v]) => v !== undefined)),
+        ...(config.env || {})
+      } as Record<string, string>
     });
 
     const client = await experimental_createMCPClient({

@@ -18,6 +18,7 @@ export interface EvalFunction {
 export interface EvalConfig {
   model: LanguageModel;
   evals: EvalFunction[];
+  env?: { [key: string]: string };
 }
 
 export interface YamlModelConfig {
@@ -36,4 +37,5 @@ export interface YamlEval {
 export interface YamlEvalConfig {
   model?: YamlModelConfig;
   evals: YamlEval[];
+  env?: { [key: string]: string };
 } 
